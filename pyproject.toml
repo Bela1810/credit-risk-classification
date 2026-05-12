@@ -3,20 +3,20 @@ name = "credit-risk-classification"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10,<3.12"
+
 dependencies = [
-    "ipykernel>=7.2.0",
-    "ipython>=9.13.0",
-    "matplotlib>=3.10.9",
-    "nbformat>=5.10.4",
-    "notebook>=7.5.6",
-    "numpy>=2.4.4",
-    "pandas>=3.0.2",
-    "plotly>=6.7.0",
-    "pycaret>=2.2.2",
-    "scikit-learn>=1.8.0",
-    "scipy>=1.17.1",
-    "seaborn>=0.13.2",
-    "statsmodels>=0.14.6",
-    "streamlit>=1.57.0",
+    "ipykernel>=6.29.0",
+    "ipython>=8.0.0",
+    "matplotlib>=3.7.0",
+    "nbformat>=5.9.0",
+    "notebook>=7.0.0",
+    "numpy",
+    "pandas",
+    "plotly",
+    "pycaret==3.3.2",
+    "scipy",
+    "seaborn",
+    "statsmodels",
+    "streamlit",
 ]
