@@ -12,6 +12,7 @@ dependencies = [
     "nbformat>=5.9.0",
     "notebook>=7.0.0",
     "numpy",
+    "optuna>=4.8.0",
     "pandas",
     "plotly",
     "pycaret==3.3.2",
