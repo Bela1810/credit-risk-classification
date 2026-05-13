@@ -2508,3 +2508,71 @@ Please also refer to the documentation for alternative solver options:
                subsample_for_bin=200000, subsample_freq=0), probability_threshold=None, encoded_labels=False, raw_score=False, round=4, verbose=True, ml_usecase=None, preprocess=True, encode_labels=<function _SupervisedExperiment.predict_model.<locals>.encode_labels at 0x00000250D977A050>)
 2026-05-11 23:54:39,251:INFO:Checking exceptions
 2026-05-11 23:54:39,251:INFO:Preloading libraries
+2026-05-12 00:20:21,454:INFO:Initializing predict_model()
+2026-05-12 00:20:21,464:INFO:predict_model(self=<pycaret.classification.oop.ClassificationExperiment object at 0x0000025098BAF3D0>, estimator=LGBMClassifier(bagging_fraction=0.8, bagging_freq=3, boosting_type='gbdt',
+               class_weight=None, colsample_bytree=1.0, feature_fraction=0.8,
+               importance_type='split', learning_rate=0.2, max_depth=-1,
+               min_child_samples=6, min_child_weight=0.001, min_split_gain=0.6,
+               n_estimators=100, n_jobs=-1, num_leaves=30, objective=None,
+               random_state=42, reg_alpha=0.001, reg_lambda=5, subsample=1.0,
+               subsample_for_bin=200000, subsample_freq=0), probability_threshold=None, encoded_labels=False, raw_score=False, round=4, verbose=True, ml_usecase=None, preprocess=True, encode_labels=<function _SupervisedExperiment.predict_model.<locals>.encode_labels at 0x00000250D98DF5B0>)
+2026-05-12 00:20:21,465:INFO:Checking exceptions
+2026-05-12 00:20:21,465:INFO:Preloading libraries
+2026-05-12 00:20:21,507:INFO:Set up data.
+2026-05-12 00:20:21,556:INFO:Set up index.
+2026-05-12 00:23:53,738:INFO:Initializing save_model()
+2026-05-12 00:23:53,740:INFO:save_model(model=LGBMClassifier(bagging_fraction=0.8, bagging_freq=3, boosting_type='gbdt',
+               class_weight=None, colsample_bytree=1.0, feature_fraction=0.8,
+               importance_type='split', learning_rate=0.2, max_depth=-1,
+               min_child_samples=6, min_child_weight=0.001, min_split_gain=0.6,
+               n_estimators=100, n_jobs=-1, num_leaves=30, objective=None,
+               random_state=42, reg_alpha=0.001, reg_lambda=5, subsample=1.0,
+               subsample_for_bin=200000, subsample_freq=0), model_name=c:\Users\belac\OneDrive\Documentos\Universidad\Ciencia de Datos y ML\Mlops\credit-risk-classification\models\lightgbm_tuned_model, prep_pipe_=Pipeline(memory=FastMemory(location=C:\Users\belac\AppData\Local\Temp\joblib),
+         steps=[('onehot_encoding',
+                 TransformerWrapper(exclude=None, include=['cartera'],
+                                    transformer=OneHotEncoder(cols=['cartera'],
+                                                              drop_invariant=False,
+                                                              handle_missing='return_nan',
+                                                              handle_unknown='value',
+                                                              return_df=True,
+                                                              use_cat_names=True,
+                                                              verbose=0)))],
+         verbose=False), verbose=True, use_case=MLUsecase.CLASSIFICATION, kwargs={})
+2026-05-12 00:23:53,740:INFO:Adding model into prep_pipe
+2026-05-12 00:23:53,794:INFO:c:\Users\belac\OneDrive\Documentos\Universidad\Ciencia de Datos y ML\Mlops\credit-risk-classification\models\lightgbm_tuned_model.pkl saved in current working directory
+2026-05-12 00:23:53,804:INFO:Pipeline(memory=Memory(location=None),
+         steps=[('onehot_encoding',
+                 TransformerWrapper(exclude=None, include=['cartera'],
+                                    transformer=OneHotEncoder(cols=['cartera'],
+                                                              drop_invariant=False,
+                                                              handle_missing='return_nan',
+                                                              handle_unknown='value',
+                                                              return_df=True,
+                                                              use_cat_names=True,
+                                                              verbose=0))),
+                ('trained_model',
+                 LGBMClassifier(bagging_fraction=0.8, bagging_freq=3,
+                                boos...lass_weight=None,
+                                colsample_bytree=1.0, feature_fraction=0.8,
+                                importance_type='split', learning_rate=0.2,
+                                max_depth=-1, min_child_samples=6,
+                                min_child_weight=0.001, min_split_gain=0.6,
+                                n_estimators=100, n_jobs=-1, num_leaves=30,
+                                objective=None, random_state=42,
+                                reg_alpha=0.001, reg_lambda=5, subsample=1.0,
+                                subsample_for_bin=200000, subsample_freq=0))],
+         verbose=False)
+2026-05-12 00:23:53,805:INFO:save_model() successfully completed......................................
+2026-05-12 00:24:38,755:INFO:Initializing load_model()
+2026-05-12 00:24:38,756:INFO:load_model(model_name=c:\Users\belac\OneDrive\Documentos\Universidad\Ciencia de Datos y ML\Mlops\credit-risk-classification\models\lightgbm_tuned_model, platform=None, authentication=None, verbose=True)
+2026-05-12 18:12:23,486:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 18:12:23,488:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 18:12:23,488:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 18:12:23,488:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 20:45:08,213:WARNING:C:\Users\belac\AppData\Local\Temp\ipykernel_15540\3306409658.py:17: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df_cv_results = pd.concat(
+
