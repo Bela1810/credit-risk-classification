@@ -2576,3 +2576,11 @@ Please also refer to the documentation for alternative solver options:
 2026-05-12 20:45:08,213:WARNING:C:\Users\belac\AppData\Local\Temp\ipykernel_15540\3306409658.py:17: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
   df_cv_results = pd.concat(
 
+2026-05-12 23:39:23,362:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 23:39:23,362:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 23:39:23,362:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
+2026-05-12 23:39:23,362:WARNING:
+'cuml' is a soft dependency and not included in the pycaret installation. Please run: `pip install cuml` to install.
