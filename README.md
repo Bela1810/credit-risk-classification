@@ -1,5 +1,11 @@
 # 📊 Credit Risk Classification – Cooperativa Financiera
 
+## Integrantes
+
+- Isabella Montoya
+- Daniel Ospina
+- Juan Camilo Manjarres
+
 ## 📌 Descripción del proyecto
 
 Este proyecto tiene como objetivo el desarrollo de un modelo de **clasificación de riesgo crediticio** basado en datos históricos de una cooperativa financiera.
@@ -18,7 +24,6 @@ El propósito principal del análisis es **identificar patrones asociados al inc
 
 ## 📁 Estructura del proyecto
 
-
 ```
 
 credit-risk-classification/
@@ -35,13 +40,13 @@ credit-risk-classification/
 ├── requirements.txt       # Dependencias del proyecto
 └── README.md
 
-````
+```
 
 ---
 
 ## ⚙️ Requisitos
 
-- Python 3.10 o superior  
+- Python 3.10 o superior
 - uv (gestor de entornos virtuales y dependencias)
 
 ---
@@ -53,7 +58,7 @@ credit-risk-classification/
 ```bash
 git clone <URL_DEL_REPOSITORIO>
 cd credit-risk-classification
-````
+```
 
 ### 2. Instalar dependencias
 
@@ -121,7 +126,7 @@ Los modelos entrenados se guardan en `models/` como archivos `.joblib` y son car
 
 El modelo entrenado se guarda en formato:
 
-* **`.joblib`**
+- **`.joblib`**
 
 Este formato permite reutilizar el modelo de forma eficiente para predicciones futuras.
 
@@ -138,11 +143,3 @@ Este formato permite reutilizar el modelo de forma eficiente para predicciones f
 7. Desarrollo del modelo y visualización usando Streamlit
 
 ---
-
-
-
-
-
-
-
-
