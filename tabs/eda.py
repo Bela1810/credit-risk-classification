@@ -11,6 +11,17 @@ from config import COLORS, EDA_KEY_COLS, FRIENDLY_NAMES, PLOTLY_TEMPLATE, TARGET
 
 def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
     key_cols = [c for c in EDA_KEY_COLS if c in raw_df.columns]
+    if not key_cols:
+        st.info("No numeric key columns available for EDA in this dataset.")
+        return
+
+    # Use a normalized copy with a friendly Default Status string column so
+    # both bool and int representations of `default` plot consistently.
+    plot_df = raw_df.copy()
+    plot_df["Default Status"] = plot_df[TARGET].astype(int).map(
+        {0: "No Default", 1: "Default"}
+    )
+    status_color = {"No Default": COLORS[0], "Default": COLORS[4]}
 
     # ── Histogram by default status ──────────────
     st.markdown('<div class="section-title">Feature Distribution by Default Status</div>',
@@ -21,11 +32,11 @@ def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
         format_func=lambda x: FRIENDLY_NAMES.get(x, x),
     )
     fig_hist = px.histogram(
-        raw_df, x=sel_col, color="default",
-        color_discrete_map={0: COLORS[0], 1: COLORS[4]},
+        plot_df, x=sel_col, color="Default Status",
+        color_discrete_map=status_color,
         barmode="overlay", opacity=0.75, nbins=50,
         template=PLOTLY_TEMPLATE,
-        labels={sel_col: FRIENDLY_NAMES.get(sel_col, sel_col), "default": "Default"},
+        labels={sel_col: FRIENDLY_NAMES.get(sel_col, sel_col)},
         title=f"{FRIENDLY_NAMES.get(sel_col, sel_col)} — by Default Status",
     )
     fig_hist.update_layout(height=360, margin=dict(t=50, b=40, l=40, r=20))
@@ -71,11 +82,11 @@ def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
             key="box_sel",
         )
         fig_box = px.box(
-            raw_df, x="default", y=box_col,
-            color="default", color_discrete_map={0: COLORS[0], 1: COLORS[4]},
+            plot_df, x="Default Status", y=box_col,
+            color="Default Status", color_discrete_map=status_color,
+            category_orders={"Default Status": ["No Default", "Default"]},
             template=PLOTLY_TEMPLATE,
-            labels={"default": "Default",
-                    box_col: FRIENDLY_NAMES.get(box_col, box_col)},
+            labels={box_col: FRIENDLY_NAMES.get(box_col, box_col)},
         )
         fig_box.update_layout(height=400, showlegend=False,
                               margin=dict(t=50, b=40, l=40, r=20))

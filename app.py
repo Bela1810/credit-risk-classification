@@ -14,7 +14,7 @@ from config import DEFAULT_DATA_PATH, TARGET
 from styles import inject_css
 from tabs import eda, models, overview, predictor
 from utils.loaders import load_and_preprocess, load_models
-from utils.metrics import evaluate_all
+from utils.metrics import compute_probs, evaluate_all, get_pipeline_input_features
 
 # ─────────────────────────────────────────────
 # PAGE CONFIG  (must be the very first st call)
@@ -85,9 +85,24 @@ _, X_test, _, y_test = train_test_split(
     X, y, test_size=test_size, random_state=42, stratify=y,
 )
 
-results     = evaluate_all(loaded_models, X_test, y_test, threshold)
+probs       = compute_probs(loaded_models, X_test, tuple(loaded_models.keys()))
+results     = evaluate_all(probs, y_test, threshold)
 model_names = list(results.keys())
 feat_names  = X.columns.tolist()
+
+# Features the saved sklearn pipelines actually consume (union across models).
+# Used by the Live Predictor so we don't ask the user for inputs the model ignores.
+_model_feats: list = []
+_seen: set = set()
+for _m in loaded_models.values():
+    used = get_pipeline_input_features(_m)
+    if not used:
+        continue
+    for f in used:
+        if f not in _seen and f in clean_df.columns:
+            _model_feats.append(f)
+            _seen.add(f)
+predictor_feats = _model_feats or feat_names
 
 # ─────────────────────────────────────────────
 # HEADER
@@ -119,4 +134,4 @@ with tab3:
     models.render(loaded_models, results, model_names, feat_names, y_test, threshold)
 
 with tab4:
-    predictor.render(loaded_models, clean_df, feat_names, threshold)
+    predictor.render(loaded_models, clean_df, predictor_feats, threshold)

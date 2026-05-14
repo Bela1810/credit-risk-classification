@@ -23,13 +23,16 @@ El propósito principal del análisis es **identificar patrones asociados al inc
 
 credit-risk-classification/
 │
-├── data/                  # Dataset original y procesado
-├── notebooks/            # Análisis exploratorio (EDA)
-├── src/                  # Código fuente del modelo
-├── models/               # Modelos entrenados (joblib)
-├── reports/              # Resultados y métricas
-├── requirements.txt      # Dependencias del proyecto
-├── pyproject.toml        # Configuración del entorno (uv)
+├── app.py                 # Entrada principal (Streamlit)
+├── config.py              # Constantes globales (paths, nombres bonitos, colores)
+├── styles.py              # CSS inyectado en la app
+├── tabs/                  # Una pestaña por archivo (overview, eda, models, predictor)
+├── utils/                 # Loaders + helpers de métricas
+├── data/                  # Dataset original y procesado (.parquet)
+├── models/                # Modelos entrenados (.joblib)
+├── notebooks/             # Análisis y entrenamiento (Jupyter)
+├── pyproject.toml         # Configuración del entorno (uv)
+├── requirements.txt       # Dependencias del proyecto
 └── README.md
 
 ````
@@ -86,17 +89,31 @@ source .venv/bin/activate
 
 ## 🧠 Ejecución del proyecto
 
-Entrenamiento del modelo:
+Lanzar la aplicación interactiva (Streamlit):
 
 ```bash
-python src/train.py
+streamlit run app.py
 ```
 
-Ejecutar análisis exploratorio (EDA):
+La app expone cuatro pestañas:
+
+1. **Dataset Overview** — KPIs, distribución del target y estadísticas descriptivas.
+2. **Exploratory Analysis** — histogramas, boxplots, correlaciones y heatmap.
+3. **Model Results** — métricas, ROC / PR, matrices de confusión, importancia de variables.
+4. **Live Predictor** — formulario para predecir la probabilidad de default de un nuevo cliente.
+
+Reentrenamiento (notebooks Jupyter en orden):
 
 ```bash
-python notebooks/eda.py
+jupyter lab notebooks/
+# 01_descarga_datos.ipynb
+# 02_ajuste_tratamiento_datos.ipynb
+# 04.AutoML.ipynb
+# 05_entrenamiento_modelo.ipynb
+# 06_interpretación_modelos.ipynb
 ```
+
+Los modelos entrenados se guardan en `models/` como archivos `.joblib` y son cargados automáticamente por la app.
 
 ---
 

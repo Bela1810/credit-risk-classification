@@ -10,18 +10,23 @@ from config import COLORS, FRIENDLY_NAMES, PLOTLY_TEMPLATE, TARGET
 
 def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
     # ── KPI row ──────────────────────────────────
+    n_features = max(clean_df.shape[1] - (1 if TARGET in clean_df.columns else 0), 0)
+    default_rate = float(raw_df[TARGET].astype(int).mean()) if TARGET in raw_df.columns else 0.0
+
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("Total Records",  f"{len(raw_df):,}")
-    c2.metric("Features",       f"{raw_df.shape[1] - 3}")
-    c3.metric("Default Rate",   f"{raw_df[TARGET].mean():.1%}")
-    c4.metric("Missing Values", f"{raw_df.isnull().sum().sum()}")
+    c2.metric("Features",       f"{n_features}")
+    c3.metric("Default Rate",   f"{default_rate:.1%}")
+    c4.metric("Missing Values", f"{int(raw_df.isnull().sum().sum()):,}")
 
     # ── Target distribution ──────────────────────
     st.markdown('<div class="section-title">Target Distribution</div>',
                 unsafe_allow_html=True)
 
-    vc = raw_df[TARGET].value_counts().reset_index()
-    vc.columns = ["default", "count"]
+    vc = (
+        raw_df[TARGET].astype(int).value_counts()
+        .rename_axis("default").reset_index(name="count")
+    )
     vc["label"] = vc["default"].map({0: "No Default", 1: "Default"})
 
     col_a, col_b = st.columns([1, 2])
