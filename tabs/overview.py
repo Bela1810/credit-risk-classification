@@ -14,20 +14,20 @@ def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
     default_rate = float(raw_df[TARGET].astype(int).mean()) if TARGET in raw_df.columns else 0.0
 
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Total Records",  f"{len(raw_df):,}")
-    c2.metric("Features",       f"{n_features}")
-    c3.metric("Default Rate",   f"{default_rate:.1%}")
-    c4.metric("Missing Values", f"{int(raw_df.isnull().sum().sum()):,}")
+    c1.metric("Registros Totales", f"{len(raw_df):,}")
+    c2.metric("Variables",         f"{n_features}")
+    c3.metric("Tasa de Default",   f"{default_rate:.1%}")
+    c4.metric("Valores Faltantes", f"{int(raw_df.isnull().sum().sum()):,}")
 
     # ── Target distribution ──────────────────────
-    st.markdown('<div class="section-title">Target Distribution</div>',
+    st.markdown('<div class="section-title">Distribución de la Variable Objetivo</div>',
                 unsafe_allow_html=True)
 
     vc = (
         raw_df[TARGET].astype(int).value_counts()
         .rename_axis("default").reset_index(name="count")
     )
-    vc["label"] = vc["default"].map({0: "No Default", 1: "Default"})
+    vc["label"] = vc["default"].map({0: "Sin Default", 1: "Default"})
 
     col_a, col_b = st.columns([1, 2])
     with col_a:
@@ -53,7 +53,7 @@ def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
         st.plotly_chart(fig_bar, use_container_width=True)
 
     # ── Data sample ──────────────────────────────
-    st.markdown('<div class="section-title">Data Sample</div>',
+    st.markdown('<div class="section-title">Muestra de Datos</div>',
                 unsafe_allow_html=True)
     st.dataframe(
         raw_df.head(200).rename(columns=FRIENDLY_NAMES),
@@ -61,7 +61,7 @@ def render(raw_df: pd.DataFrame, clean_df: pd.DataFrame) -> None:
     )
 
     # ── Descriptive statistics ───────────────────
-    st.markdown('<div class="section-title">Descriptive Statistics</div>',
+    st.markdown('<div class="section-title">Estadísticas Descriptivas</div>',
                 unsafe_allow_html=True)
     num_cols = (
         clean_df.select_dtypes(include="number")

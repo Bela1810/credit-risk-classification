@@ -20,7 +20,7 @@ from utils.metrics import compute_probs, evaluate_all, get_pipeline_input_featur
 # PAGE CONFIG  (must be the very first st call)
 # ─────────────────────────────────────────────
 st.set_page_config(
-    page_title="Credit Default Predictor",
+    page_title="Predictor de Default Crediticio",
     page_icon="💳",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -31,38 +31,40 @@ inject_css()
 # SIDEBAR
 # ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## 💳 Credit Default Predictor")
+    st.markdown("## 💳 Predictor de Default Crediticio")
     st.markdown("---")
 
-    st.markdown("### 📂 Data Source")
+    st.markdown("### 📂 Fuente de Datos")
     data_source = st.radio(
-        "Choose data source",
-        ["📁 Use default dataset", "⬆️ Upload a CSV file"],
-        help="Default dataset is loaded from the `data/` directory in the repo",
+        "Elige la fuente de datos",
+        ["📁 Usar dataset por defecto", "⬆️ Subir un archivo CSV"],
+        help="El dataset por defecto se carga desde el directorio `data/` del repositorio",
     )
 
     uploaded    = None
-    use_default = data_source == "📁 Use default dataset"
+    use_default = data_source == "📁 Usar dataset por defecto"
 
     if use_default:
         if not os.path.exists(DEFAULT_DATA_PATH):
             st.error(
-                f"❌ Default file not found: `{DEFAULT_DATA_PATH}`\n\n"
-                "Make sure `02_datos_ajustados_cooperativa.parquet` "
-                "is inside the `data/` folder."
+                f"❌ Archivo por defecto no encontrado: `{DEFAULT_DATA_PATH}`\n\n"
+                "Asegúrate de que `02_datos_ajustados_cooperativa.parquet` "
+                "esté dentro de la carpeta `data/`."
             )
             st.stop()
-        st.success("✅ Using default dataset")
+        st.success("✅ Usando dataset por defecto")
     else:
-        uploaded = st.file_uploader("Upload dataset (CSV)", type=["csv"])
+        uploaded = st.file_uploader("Sube un dataset (CSV)", type=["csv"])
         if uploaded is None:
-            st.info("👆 Upload a CSV file to continue.")
+            st.info("👆 Sube un archivo CSV para continuar.")
             st.stop()
 
-    st.markdown("### 🔧 Evaluation Settings")
-    test_size = st.slider("Test set size",      0.10, 0.40, 0.20, 0.05)
-    threshold = st.slider("Decision threshold", 0.10, 0.90, 0.50, 0.05,
-                          help="Probability cutoff for classifying as Default")
+    st.markdown("### 🔧 Configuración de Evaluación")
+    test_size = st.slider("Tamaño del conjunto de prueba", 0.10, 0.40, 0.20, 0.05)
+    threshold = st.slider("Umbral de decisión", 0.10, 0.90, 0.50, 0.05,
+                          help="Umbral de probabilidad para clasificar como Default. "
+                               "Bajarlo aumenta el Recall (detecta más defaults) a costa "
+                               "de más falsos positivos.")
 
     st.markdown("---")
     st.markdown(
@@ -70,7 +72,7 @@ with st.sidebar:
         '<span class="model-badge badge-lgbm">LightGBM</span>',
         unsafe_allow_html=True,
     )
-    st.caption("Pre-trained models loaded from `models/`")
+    st.caption("Modelos pre-entrenados cargados desde `models/`")
 
 # ─────────────────────────────────────────────
 # LOAD DATA & MODELS
@@ -107,10 +109,10 @@ predictor_feats = _model_feats or feat_names
 # ─────────────────────────────────────────────
 # HEADER
 # ─────────────────────────────────────────────
-st.markdown("# 💳 Credit Default Predictor")
+st.markdown("# 💳 Predictor de Default Crediticio")
 st.markdown(
-    "Classification-based default detection using pre-trained "
-    "**Gradient Boosting** and **LightGBM** models"
+    "Detección de incumplimiento basada en clasificación, usando los modelos "
+    "pre-entrenados **Gradient Boosting** y **LightGBM**"
 )
 st.markdown("---")
 
@@ -118,10 +120,10 @@ st.markdown("---")
 # TABS
 # ─────────────────────────────────────────────
 tab1, tab2, tab3, tab4 = st.tabs([
-    "📊 Dataset Overview",
-    "🔍 Exploratory Analysis",
-    "🤖 Model Results",
-    "🎯 Live Predictor",
+    "📊 Resumen del Dataset",
+    "🔍 Análisis Exploratorio",
+    "🤖 Resultados de los Modelos",
+    "🎯 Predictor en Vivo",
 ])
 
 with tab1:

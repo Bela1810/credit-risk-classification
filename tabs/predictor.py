@@ -16,10 +16,11 @@ def render(
     feat_names: list,
     threshold: float,
 ) -> None:
-    st.markdown("### 🎯 Predict Default Probability for a New Client")
+    st.markdown("### 🎯 Predecir Probabilidad de Default para un Nuevo Cliente")
     st.markdown(
-        f"Decision threshold is **{threshold:.2f}** (set in sidebar). "
-        "Adjust the inputs below to match a client profile."
+        f"El umbral de decisión es **{threshold:.2f}** (configurable en la barra "
+        "lateral). Ajusta los valores de abajo para que coincidan con el perfil "
+        "del cliente."
     )
 
     # ── Input form ───────────────────────────────
@@ -52,7 +53,7 @@ def render(
                 )
 
     st.markdown("---")
-    if not st.button("🔮 Predict", type="primary", use_container_width=True):
+    if not st.button("🔮 Predecir", type="primary", use_container_width=True):
         return
 
     # ── Inference ────────────────────────────────
@@ -65,19 +66,19 @@ def render(
 
     # ── Results ──────────────────────────────────
     st.markdown("---")
-    st.markdown("#### 📋 Prediction Results")
+    st.markdown("#### 📋 Resultados de la Predicción")
 
     p1, p2, p3 = st.columns(3)
     p1.metric("📈 Gradient Boosting", f"{gbc_prob:.1%}",
-              delta="Default" if gbc_prob >= threshold else "No Default")
+              delta="Default" if gbc_prob >= threshold else "Sin Default")
     p2.metric("🍃 LightGBM", f"{lgbm_prob:.1%}",
-              delta="Default" if lgbm_prob >= threshold else "No Default")
-    p3.metric("⚖️ Ensemble (avg)", f"{avg_prob:.1%}")
+              delta="Default" if lgbm_prob >= threshold else "Sin Default")
+    p3.metric("⚖️ Ensemble (promedio)", f"{avg_prob:.1%}")
 
     risk_cls   = "high-risk" if avg_prob >= threshold else "low-risk"
-    risk_label = ("⚠️ HIGH RISK — Default likely"
+    risk_label = ("⚠️ ALTO RIESGO — Default probable"
                   if avg_prob >= threshold else
-                  "✅ LOW RISK — Default unlikely")
+                  "✅ BAJO RIESGO — Default improbable")
     st.markdown(f'<span class="pred-badge {risk_cls}">{risk_label}</span>',
                 unsafe_allow_html=True)
 
@@ -88,7 +89,7 @@ def render(
         value=round(avg_prob * 100, 1),
         number={"suffix": "%"},
         delta={"reference": threshold * 100, "valueformat": ".1f"},
-        title={"text": "Default Probability — Ensemble"},
+        title={"text": "Probabilidad de Default — Ensemble"},
         gauge={
             "axis": {"range": [0, 100]},
             "bar":  {"color": bar_color},
@@ -112,9 +113,9 @@ def render(
 
     # ── Model agreement ──────────────────────────
     diff      = abs(gbc_prob - lgbm_prob)
-    agreement = "High" if diff < 0.05 else "Moderate" if diff < 0.15 else "Low"
-    color_map = {"High": "green", "Moderate": "orange", "Low": "red"}
+    agreement = "Alto" if diff < 0.05 else "Moderado" if diff < 0.15 else "Bajo"
+    color_map = {"Alto": "green", "Moderado": "orange", "Bajo": "red"}
     st.markdown(
-        f"**Model Agreement:** :{color_map[agreement]}[{agreement}]  "
+        f"**Acuerdo entre Modelos:** :{color_map[agreement]}[{agreement}]  "
         f"(|GBC − LGBM| = {diff:.1%})"
     )

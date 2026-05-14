@@ -8,7 +8,7 @@ import streamlit as st
 from config import DROP_COLS, TARGET, DEFAULT_DATA_PATH, MODEL_PATHS
 
 
-@st.cache_resource(show_spinner="Loading models…")
+@st.cache_resource(show_spinner="Cargando modelos…")
 def load_models() -> dict:
     """Load all joblib models. Stops the app with a clear error if any file is missing."""
     models, missing = {}, []
@@ -19,14 +19,14 @@ def load_models() -> dict:
             missing.append(path)
     if missing:
         st.error(
-            f"❌ Model file(s) not found: `{'`, `'.join(missing)}`\n\n"
-            "Make sure the `.joblib` files are inside the `models/` folder."
+            f"❌ Archivo(s) de modelo no encontrado(s): `{'`, `'.join(missing)}`\n\n"
+            "Asegúrate de que los archivos `.joblib` estén dentro de la carpeta `models/`."
         )
         st.stop()
     return models
 
 
-@st.cache_data(show_spinner="Preprocessing data…")
+@st.cache_data(show_spinner="Procesando datos…")
 def load_and_preprocess(
     file_obj,
     use_default: bool = False,

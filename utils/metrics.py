@@ -7,21 +7,27 @@ from sklearn.metrics import (
     accuracy_score,
     average_precision_score,
     f1_score,
+    recall_score,
     roc_auc_score,
 )
 
 
 def clf_metrics(y_true, y_pred, y_prob) -> dict:
-    """Return the four core classification metrics as a dict."""
+    """Return the core classification metrics as a dict.
+
+    Recall is computed on the positive class (Default = 1), which is the
+    metric the project optimizes for in the training notebooks.
+    """
     return {
-        "Accuracy":  round(accuracy_score(y_true, y_pred),              4),
-        "F1 Score":  round(f1_score(y_true, y_pred, zero_division=0),   4),
-        "ROC-AUC":   round(roc_auc_score(y_true, y_prob),               4),
-        "Avg Prec.": round(average_precision_score(y_true, y_prob),     4),
+        "Exactitud": round(accuracy_score(y_true, y_pred),            4),
+        "Recall":    round(recall_score(y_true, y_pred, zero_division=0), 4),
+        "F1":        round(f1_score(y_true, y_pred, zero_division=0), 4),
+        "ROC-AUC":   round(roc_auc_score(y_true, y_prob),             4),
+        "Prec. Prom.": round(average_precision_score(y_true, y_prob), 4),
     }
 
 
-@st.cache_data(show_spinner="Scoring test set…")
+@st.cache_data(show_spinner="Calculando predicciones…")
 def compute_probs(_models: dict, X_test, _model_keys: tuple) -> dict:
     """
     Run predict_proba once per model on X_test.
