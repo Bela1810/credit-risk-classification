@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from pandas.api.types import is_numeric_dtype
 
 from config import FRIENDLY_NAMES, PLOTLY_TEMPLATE
 
@@ -27,17 +28,28 @@ def render(
     input_vals: dict = {}
 
     for i, feat in enumerate(feat_names):
-        c_min = float(clean_df[feat].min())
-        c_max = float(clean_df[feat].max())
-        c_med = float(clean_df[feat].median())
-        step  = round(max((c_max - c_min) / 100, 0.01), 4)
-        label = FRIENDLY_NAMES.get(feat, feat)
+        series = clean_df[feat]
+        label  = FRIENDLY_NAMES.get(feat, feat)
         with cols_cycle[i % 3]:
-            input_vals[feat] = st.number_input(
-                label, min_value=c_min, max_value=c_max,
-                value=c_med, step=step,
-                key=f"inp_{feat}",
-            )
+            if is_numeric_dtype(series):
+                c_min = float(series.min())
+                c_max = float(series.max())
+                c_med = float(series.median())
+                step  = round(max((c_max - c_min) / 100, 0.01), 4)
+                input_vals[feat] = st.number_input(
+                    label, min_value=c_min, max_value=c_max,
+                    value=c_med, step=step,
+                    key=f"inp_{feat}",
+                )
+            else:
+                options = sorted(series.dropna().astype(str).unique().tolist())
+                mode_vals = series.mode(dropna=True)
+                default = str(mode_vals.iloc[0]) if not mode_vals.empty else options[0]
+                input_vals[feat] = st.selectbox(
+                    label, options=options,
+                    index=options.index(default) if default in options else 0,
+                    key=f"inp_{feat}",
+                )
 
     st.markdown("---")
     if not st.button("🔮 Predict", type="primary", use_container_width=True):

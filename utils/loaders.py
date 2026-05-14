@@ -4,7 +4,6 @@
 import joblib
 import pandas as pd
 import streamlit as st
-from sklearn.preprocessing import LabelEncoder
 
 from config import DROP_COLS, TARGET, DEFAULT_DATA_PATH, MODEL_PATHS
 
@@ -34,7 +33,11 @@ def load_and_preprocess(
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Load raw data from a parquet (default) or an uploaded CSV,
-    then encode categoricals and return (raw_df, clean_df).
+    then normalize dtypes and return (raw_df, clean_df).
+
+    Note: the saved model pipelines already include a ColumnTransformer
+    with OneHotEncoder for nominal columns, so we keep categoricals as
+    plain strings rather than label-encoding them here.
     """
     if use_default:
         raw = pd.read_parquet(DEFAULT_DATA_PATH)
@@ -49,8 +52,10 @@ def load_and_preprocess(
     if TARGET in df.columns:
         df[TARGET] = df[TARGET].astype(int)
 
-    for col in df.select_dtypes(include=["object"]).columns:
-        le = LabelEncoder()
-        df[col] = le.fit_transform(df[col].astype(str))
+    # Convert pandas Categorical columns (common in parquet) to plain
+    # string dtype so downstream code (.min/.max/.median, sklearn,
+    # plotly) doesn't trip on unordered Categoricals.
+    for col in df.select_dtypes(include=["category"]).columns:
+        df[col] = df[col].astype(str)
 
     return raw, df
